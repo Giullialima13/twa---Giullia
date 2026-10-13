@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo - Ficha 03</title>
+  </head>
+  <body>
+    <header>
+      <h1>Catálogo de Produtos</h1>
+    </header>
+
+    <main>
+      <div class="controls">
+        <input type="text" id="search" placeholder="Pesquisar por nome..." />
+        
+        <select id="category">
+          <option value="">Todas as categorias</option>
+        </select>
+        
+        <button id="sort">Ordenar por preço (DESC)</button>
+      </div>
+
+      <div class="content-container">
+        <ul id="list"></ul>
+        <section id="detail"></section>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
