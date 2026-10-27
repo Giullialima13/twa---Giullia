@@ -1,27 +1,31 @@
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 export function useLoad(url) {
-  const status = ref('loading')
+  const data = ref([])
+  const loading = ref(false)
   const error = ref(null)
-  const items = ref([])
 
-  async function load() {
-    status.value = 'loading'
+  const fetchData = async () => {
+    loading.value = true
     error.value = null
     try {
-      const res = await fetch(url)
-      if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`)
-      items.value = await res.json()
-      status.value = 'ok'
+      const response = await fetch(url)
+      if (!response.ok) throw new Error('Erro ao carregar os dados')
+      data.value = await response.json()
     } catch (err) {
-      status.value = 'error'
       error.value = err.message
+    } finally {
+      loading.value = false
     }
   }
 
-  onMounted(() => {
-    load()
-  })
 
-  return { status, error, items, load }
+  fetchData()
+
+  return {
+    data,
+    loading,
+    error,
+    retry: fetchData 
+  }
 }
