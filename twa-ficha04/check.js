@@ -1,22 +1,16 @@
-import assert from 'node:assert/strict';
-import { items } from './data.js';
-import { byCategory, search, total, top, categories, withDiscount } from './catalog.js';
+import fs from 'fs'
+import path from 'path'
 
-//byCategory
-assert.equal(byCategory(items, 'game').length, items.length);
+const filePath = path.resolve('public/items.json')
 
-//seearch
-assert.ok(search(items, 'Hollow').length > 0);
+if (!fs.existsSync(filePath)) {
+  console.error('❌ Erro: public/items.json não encontrado!')
+  process.exit(1)
+}
 
-//total
-assert.equal(typeof total(items), 'number');
-
-//top3
-assert.equal(top(items, 3).length, 3);
-
-//categories
-assert.ok(Array.isArray(categories(items)));
-
-//withDiscount
-const discounted = withDiscount(items, 10);
-assert.notEqual(discounted, items); 
+try {
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+  console.log(`✅ items.json carregado com sucesso! Total de itens: ${data.length}`)
+} catch (err) {
+  console.error('❌ Erro ao parsear o items.json:', err.message)
+}

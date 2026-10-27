@@ -1,5 +1,4 @@
 <script setup>
-// Exibe a lista recebendo a prop 'items'
 defineProps(['items', 'selectedId'])
 defineEmits(['select'])
 </script>
@@ -12,8 +11,7 @@ defineEmits(['select'])
       :class="{ selected: item.id === selectedId }"
       @click="$emit('select', item.id)"
     >
-      <!-- Ponto C: Usando v-html num campo ou renderização normal -->
-      <span v-html="item.name"></span> · {{ item.price.toFixed(2) }} €
+      {{ item.name }} · {{ item.price.toFixed(2) }} €
     </li>
   </ul>
 </template>
