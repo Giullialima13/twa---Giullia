@@ -1,31 +1,42 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 
-const emit = defineEmits(['add-item'])
+const emit = defineEmits(['save'])
 
-const name = ref('')
-const price = ref('')
-const tag = ref('')
+const form = reactive({
+  name: '',
+  price: '',
+  tag: ''
+})
 
-// Validação 
-const isFormValid = computed(() => {
-  return name.value.trim() !== '' && price.value > 0 && tag.value.trim() !== ''
+// Gestão de erross
+const errors = computed(() => {
+  const errs = {}
+  if (!form.name.trim()) errs.name = 'O nome é obrigatório.'
+  if (!form.price || form.price <= 0) errs.price = 'O preço deve ser superior a 0.'
+  return errs
+})
+
+// Validação se o formulário é válido
+const isValid = computed(() => {
+  return Object.keys(errors.value).length === 0
 })
 
 const handleSubmit = () => {
-  if (!isFormValid.value) return
+  if (!isValid.value) return
 
-  emit('add-item', {
+  
+  emit('save', {
     id: Date.now(),
-    name: name.value,
-    price: Number(price.value),
-    tag: tag.value
+    name: form.name,
+    price: Number(form.price),
+    tag: form.tag
   })
 
-  // Reset automático do formulário
-  name.value = ''
-  price.value = ''
-  tag.value = ''
+  // Reset do formulário
+  form.name = ''
+  form.price = ''
+  form.tag = ''
 }
 </script>
 
@@ -35,21 +46,23 @@ const handleSubmit = () => {
     
     <div class="form-group">
       <label>Nome:</label>
-      <input v-model="name" type="text" placeholder="Nome do item" />
+      <input v-model="form.name" type="text" placeholder="Nome do item" />
+      <span v-if="errors.name" class="error">{{ errors.name }}</span>
     </div>
 
     <div class="form-group">
       <label>Preço:</label>
-      <input v-model.number="price" type="number" placeholder="0.00" />
+      <input v-model.number="form.price" type="number" placeholder="0.00" />
+      <span v-if="errors.price" class="error">{{ errors.price }}</span>
     </div>
 
     <div class="form-group">
       <label>Categoria / Tag:</label>
-      <input v-model="tag" type="text" placeholder="Ex: Eletrónicos" />
+      <input v-model="form.tag" type="text" placeholder="Ex: Eletrónicos" />
     </div>
     
-    <!-- Botão desativado se o formulário não for válido -->
-    <button type="submit" :disabled="!isFormValid">Guardar Item</button>
+    
+    <button type="submit" :disabled="!isValid">Guardar Item</button>
   </form>
 </template>
 
@@ -64,5 +77,10 @@ const handleSubmit = () => {
 .form-group {
   display: flex;
   flex-direction: column;
+}
+.error {
+  color: #ff4d4f;
+  font-size: 0.8rem;
+  margin-top: 2px;
 }
 </style>

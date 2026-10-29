@@ -6,26 +6,26 @@ defineProps({
   }
 })
 
-defineEmits(['select'])
+const emit = defineEmits(['select'])
+
+const selectItem = (id) => {
+  emit('select', id)
+}
 </script>
 
 <template>
   <div class="item-list">
     <h3>Lista de Itens</h3>
-    
-    <!-- Se houver itens, mostra a lista -->
     <ul v-if="items && items.length > 0">
       <li 
         v-for="item in items" 
         :key="item.id" 
-        @click="$emit('select', item)"
+        @click="selectItem(item.id)"
         class="item-li"
       >
         {{ item.name }}
       </li>
     </ul>
-
-    <!-- Mensagem de lista vazia-->
     <p v-else class="empty-message">Nenhum item encontrado.</p>
   </div>
 </template>
