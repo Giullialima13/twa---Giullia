@@ -16,33 +16,59 @@ const selectItem = (id) => {
 <template>
   <div class="item-list">
     <h3>Lista de Itens</h3>
-    <ul v-if="items && items.length > 0">
-      <li 
-        v-for="item in items" 
-        :key="item.id" 
-        @click="selectItem(item.id)"
-        class="item-li"
-      >
-        {{ item.name }}
+    <ul>
+      <li v-for="item in items" :key="item.id" @click="selectItem(item.id)" class="item-card">
+        <span class="item-name">{{ item.name }}</span>
+        <span class="item-price">{{ item.price }} EUR</span>
       </li>
     </ul>
-    <p v-else class="empty-message">Nenhum item encontrado.</p>
   </div>
 </template>
 
 <style scoped>
 .item-list {
-  margin: 1rem 0;
+  width: 100%;
+  max-width: 450px;
 }
-.item-li {
+
+h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item-card {
+  background: #18181b;
+  border: 1px solid #27272a;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   cursor: pointer;
-  padding: 4px 0;
+  transition: border-color 0.2s;
 }
-.item-li:hover {
-  color: #42b883;
+
+.item-card:hover {
+  border-color: #10b981;
 }
-.empty-message {
-  color: #888;
-  font-style: italic;
+
+.item-name {
+  font-weight: 500;
+  color: #f4f4f5;
+}
+
+.item-price {
+  color: #10b981;
+  font-size: 0.9rem;
 }
 </style>
